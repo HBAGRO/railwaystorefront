@@ -13,6 +13,7 @@ import MobileActions from "./mobile-actions"
 import ProductPrice from "../product-price"
 import { addToCart } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
+import QuoteRequestButton from "@modules/products/components/quote-request"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -149,6 +150,11 @@ export default function ProductActions({
             ? "Out of stock"
             : "Add to cart"}
         </Button>
+        <QuoteRequestButton
+          productId={product.id || ""}
+          productTitle={product.title || ""}
+          variant="secondary"
+        />
         <MobileActions
           product={product}
           variant={selectedVariant}
