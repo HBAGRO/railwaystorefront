@@ -1,0 +1,14 @@
+[build]
+# Use the Dockerfile in the root directory
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Start command is defined in Dockerfile, but can be overridden here if needed
+# startCommand = "node server.js"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+# Health check configuration
+healthcheckPath = "/"
+healthcheckTimeout = 100
