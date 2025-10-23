@@ -44,7 +44,21 @@ const nextConfig = {
         protocol: "https",
         hostname: process.env.NEXT_PUBLIC_MINIO_ENDPOINT,
       }] : []),
+      {
+        protocol: "https",
+        hostname: "**.railway.app",
+      },
     ],
+    minimumCacheTTL: 60,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ['image/webp'],
+  },
+  // Railway timeout fix
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
   },
   serverRuntimeConfig: {
     port: process.env.PORT || 3000
