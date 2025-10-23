@@ -20,13 +20,30 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
+# Accept build arguments for environment variables needed during build
+ARG NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+ARG NEXT_PUBLIC_MEDUSA_BACKEND_URL
+ARG NEXT_PUBLIC_BASE_URL
+ARG NEXT_PUBLIC_INDEX_NAME
+ARG NEXT_PUBLIC_SEARCH_ENDPOINT
+ARG NEXT_PUBLIC_MINIO_ENDPOINT
+ARG MEILISEARCH_API_KEY
+
+# Set them as environment variables for the build process
+ENV NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=$NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+ENV NEXT_PUBLIC_MEDUSA_BACKEND_URL=$NEXT_PUBLIC_MEDUSA_BACKEND_URL
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ENV NEXT_PUBLIC_INDEX_NAME=$NEXT_PUBLIC_INDEX_NAME
+ENV NEXT_PUBLIC_SEARCH_ENDPOINT=$NEXT_PUBLIC_SEARCH_ENDPOINT
+ENV NEXT_PUBLIC_MINIO_ENDPOINT=$NEXT_PUBLIC_MINIO_ENDPOINT
+ENV MEILISEARCH_API_KEY=$MEILISEARCH_API_KEY
+
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build the Next.js application
-# The build script includes 'npm run wait' which waits for the backend
-# In Railway, make sure MEDUSA_BACKEND_URL is set as an environment variable
+# Railway will automatically pass environment variables as build args
 RUN pnpm run build:next
 
 # Stage 3: Production image
